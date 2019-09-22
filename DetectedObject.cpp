@@ -7,7 +7,7 @@
 //
 
 #include "DetectedObject.hpp"
-
+/*
 DetectedObject::DetectedObject(int x, int y, int width, int height, int frame, int position)
 : box(x, y, width, height), frame(frame), position(position){
     x = box.x;
@@ -16,6 +16,12 @@ DetectedObject::DetectedObject(int x, int y, int width, int height, int frame, i
     height = box.height;
     center_x = x + width/2;
     center_y = y + height/2;
+}*/
+
+DetectedObject::DetectedObject(int center_x, int center_y, int width, int height, int frame, int position) : center_x(center_x), center_y(center_y), frame(frame), position(position){
+    x = center_x - width/2;
+    y = center_y - height/2;
+    box = Rect(x, y, width, height);
 }
 
 void DetectedObject::reset(){
@@ -25,4 +31,10 @@ void DetectedObject::reset(){
     height = box.height;
     center_x = x + width/2;
     center_y = y + height/2;
+}
+
+void DetectedObject::save_prev_pos(){
+    prev_position_x = x;
+    prev_position_y = y;
+    reset();
 }
