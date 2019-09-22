@@ -14,10 +14,11 @@
 #include <iostream>
 #include <algorithm>
 #include <stdlib.h>
+#include <math.h>
 #include "DetectedObject.hpp"
 
 #define thold_detect_cols 50
-#define thold_detect_time 5
+#define thold_detect_time 7
 
 using namespace cv;
 using namespace std;
@@ -35,11 +36,19 @@ private:
     Mat fgMaskMOG2;
     Ptr<BackgroundSubtractor> pMOG;
     
+    /*
+    Mat hsv; // for HSV in meanShift
+    Mat dst; // for HSV in meanShift
+    static float range_[]; // for HSV in meanShift
+    static const float* range[]; // for HSV in meanShift
+    static int histSize[]; // for HSV in meanShift
+    static int channels[]; // for HSV in meanShift
+    */
+     
     int ratio;
     int thold_object_width;
     int thold_object_height;
     int thold_binarization;
-    int unit_brightness;
     
     int upperline;
     int midline;
@@ -53,8 +62,6 @@ private:
     uchar* below_2;
     uchar* below_1;
     
-    int x;
-    
     int totalframe;
     
     vector<DetectedObject> Objects;
@@ -62,9 +69,12 @@ private:
     int64 time_start;
     int64 time_end;
     
+private:
+    int roi_width;
+    int roi_height;
+    
 private: // Used only for methods
-    int k;
-    int boxwidth_temp;
+    int max_width_temp;
     int recursive_temp1;
     int recursive_temp2;
     int recursive_temp3;
@@ -78,12 +88,15 @@ protected:
     void set_Mask();
     void check_endpoint();
     void detection();
+    void detect_upperline(int x);
+    void detect_belowline(int x);
     void tracking_and_counting();
     void paint_line();
     
 protected:
     int recursive_ruler_x(uchar* ptr, int start, const int& interval);
-    void MakeBox(int x, int y, int horizon);
+    void MakeBox(int center_x, int center_y);
+    // void setup_roi_of_latest_obj(); // for HSV in meanShift
 };
 
 #endif /* FrameHandler_hpp */
