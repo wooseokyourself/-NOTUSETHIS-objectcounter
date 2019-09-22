@@ -10,7 +10,7 @@
 
 int main(void){
     while(true){
-        FrameHandler* system = new FrameHandler("/Users/user/Google 드라이브/공프기/videos/190909_4.mp4");
+        FrameHandler* system = new FrameHandler("$INPUT_YOUR_VIDEO_PATH");
         if(system->Play()){
             delete system;
             break;
