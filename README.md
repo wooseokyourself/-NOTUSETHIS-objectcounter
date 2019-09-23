@@ -1,6 +1,7 @@
 # objectcounter
 
->video drive https://drive.google.com/open?id=15lZPvhesTj4s4xF_Ht_Xu0wryZGDxivu
+#### video drive (only our members can access with $student_id@handong.edu)
+> https://drive.google.com/open?id=15lZPvhesTj4s4xF_Ht_Xu0wryZGDxivu
 
 ## ***starting variables for best results (command line inputs)***
 --> for codes last updated in 24, Sep, 2019
