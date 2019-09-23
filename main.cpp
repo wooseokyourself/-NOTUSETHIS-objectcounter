@@ -1,6 +1,5 @@
 //
 //  main.cpp
-//  NoDeepLearning
 //
 //  Created by wooseokyourself on 23/07/2019.
 //  Copyright © 2019 wooseokyourself. All rights reserved.
