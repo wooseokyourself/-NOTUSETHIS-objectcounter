@@ -18,13 +18,16 @@
 #include "DetectedObject.hpp"
 
 #define thold_detect_cols 50
-#define thold_detect_time 7
 
 using namespace cv;
 using namespace std;
 
 class FrameHandler{
 private:
+    bool MAKEBOXFUNC_DIVIDING_TOKEN;
+    
+private:
+    int thold_detect_time;
     int history;
     int varThreshold;
     
