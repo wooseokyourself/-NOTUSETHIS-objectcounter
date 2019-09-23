@@ -27,7 +27,9 @@ FrameHandler::FrameHandler(string videopath) : history(500), varThreshold(200), 
     
     capture >> frame;
     
-    ratio = round(frame.cols/thold_detect_cols);
+//!!!!!!!!!!!!!!!!!!!!!! this ratio need to be changed when other video loaded -> round(frame.cols / thold_detect_cols)
+    ratio = round(800/thold_detect_cols);
+//!!!!!!!!!!!!!!!!!!!!!!
     
     upperline = frame.rows*2/10;
     midline = frame.rows*5/10;
