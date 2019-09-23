@@ -15,8 +15,25 @@ int FrameHandler::histSize[] = {180}; // for HSV in meanShift
 int FrameHandler::channels[] = {0}; // for HSV in meanShift
  
 */
-FrameHandler::FrameHandler(string videopath) : history(500), varThreshold(200), thold_object_width(300), thold_object_height(50), totalframe(0), time_start(0), time_end(0), max_width_temp(0), recursive_temp1(0), recursive_temp2(0), recursive_temp3(0), counter(0)
+FrameHandler::FrameHandler(string videopath) : history(500), varThreshold(200), totalframe(0), time_start(0), time_end(0), max_width_temp(0), recursive_temp1(0), recursive_temp2(0), recursive_temp3(0), counter(0)
 {
+    capture.open(videopath);
+        
+    pMOG = createBackgroundSubtractorMOG2(history, varThreshold, true);
+    // pMOG = createBackgroundSubtractorMOG2(500, 16, false);
+    // pMOG = createBackgroundSubtractorKNN();
+    
+    namedWindow("Frame");
+    namedWindow("FG Mask MOG 2");
+    
+    capture >> frame;
+    
+    ratio = round(frame.cols/thold_detect_cols);
+    
+    upperline = frame.rows*2/10;
+    midline = frame.rows*5/10;
+    belowline = frame.rows*8/10;
+    
     cout << "Which side is inside? Up(0), Down(1)" << endl;
     cin >> inside;
     if(inside == upper_area)
@@ -38,23 +55,15 @@ FrameHandler::FrameHandler(string videopath) : history(500), varThreshold(200), 
     cout << "set Obj Width  : "; cin >> thold_object_width;
     cout << "set ROI Height : " ; cin >> roi_height;
     cout << "set ROI Width  : " ; cin >> roi_width;
+    cout << "set thold_detect_time : "; cin >> thold_detect_time;
+    int token;
+    cout << "use dividing ROI function? (1: yes / other num: no)" ; cin >> token;
+        if(token == 1) MAKEBOXFUNC_DIVIDING_TOKEN = true;
+        else bool MAKEBOXFUNC_DIVIDING_TOKEN = false;
     cout << endl;
     cout << "Program will reboot when 'binarization' is 0" << endl;
     
-    capture.open(videopath);
     
-    pMOG = createBackgroundSubtractorMOG2(history, varThreshold, true);
-    // pMOG = createBackgroundSubtractorMOG2(500, 16, false);
-    // pMOG = createBackgroundSubtractorKNN();
-    
-    namedWindow("Frame");
-    namedWindow("FG Mask MOG 2");
-    
-    capture >> frame;
-    ratio = round(800/thold_detect_cols);
-    upperline = frame.rows*1/10;
-    midline = frame.rows*5/10;
-    belowline = frame.rows*9/10;
     
     createTrackbar("White Width", "FG Mask MOG 2", &thold_object_width, 300); // For controlling the minimum of detection_width.
     
@@ -144,10 +153,10 @@ bool FrameHandler::Play(){
         
         if(totalframe % 50 == 0){
             // cout << "EXISTING OBJECT NUMBER  : " << Objects.size() << endl;
-            cout << "-------------------------" << endl;
-            cout << "ROI HEIGHT : " << roi_height << endl;
-            cout << "ROI WIDTH  : " << roi_width << endl;
-            cout << "-------------------------" << endl;
+            // cout << "-------------------------" << endl;
+            // cout << "ROI HEIGHT : " << roi_height << endl;
+            // cout << "ROI WIDTH  : " << roi_width << endl;
+            // cout << "-------------------------" << endl;
             /*
             cout << "===============================" << endl;
             cout << "varThreshold : " << varThreshold << endl;
@@ -316,7 +325,7 @@ void FrameHandler::detect_upperline(int x){
                     if(thold_object_width <= max_width_temp){
                         // This "if" checks whether detected object is big enough ; standard is "thold_object_width"
                         // MakeBox(x * ratio, upperline - thold_object_height, boxwidth_temp);
-                        if((roi_width*2*(3/5)) <= max_width_temp){
+                        if(MAKEBOXFUNC_DIVIDING_TOKEN && (roi_width*2*(3/5)) <= max_width_temp){
                             MakeBox((x*ratio + (max_width_temp/4)*(1/4)), upperline);
                             MakeBox((x*ratio + (max_width_temp/4)*(3/4)), upperline);
                         }
@@ -357,7 +366,7 @@ void FrameHandler::detect_belowline(int x){
                     if(thold_object_width <= max_width_temp){
                         // This "if" checks whether detected object is big enough ; standard is "thold_object_width"
                         // MakeBox(x * ratio, upperline - thold_object_height, boxwidth_temp);
-                        if((roi_width*2*(3/5)) <= max_width_temp){
+                        if(MAKEBOXFUNC_DIVIDING_TOKEN && (roi_width*2*(3/5)) <= max_width_temp){
                             MakeBox((x*ratio + (max_width_temp/4)*(1/4)), belowline);
                             MakeBox((x*ratio + (max_width_temp/4)*(3/4)), belowline);
                         }
