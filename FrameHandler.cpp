@@ -16,7 +16,16 @@ int FrameHandler::channels[] = {0}; // for HSV in meanShift
 */
 FrameHandler::FrameHandler(string videopath) : history(500), varThreshold(200), totalframe(0), time_start(0), time_end(0), max_width_temp(0), recursive_temp1(0), recursive_temp2(0), recursive_temp3(0), counter(0)
 {
-    capture.open(videopath);
+    int capture_type;
+    cout << "Capture type(1: video input / 0: Cam) : "; cin >> capture_type;
+    if(capture_type == 1)
+        capture.open(videopath);
+    else if(capture_type == 0)
+        capture.open(-1);
+    else{
+        cout << "Wrong input." << endl;
+        exit(1);
+    }
         
     pMOG = createBackgroundSubtractorMOG2(history, varThreshold, true);
     // pMOG = createBackgroundSubtractorMOG2(500, 16, false);
@@ -62,7 +71,9 @@ FrameHandler::FrameHandler(string videopath) : history(500), varThreshold(200), 
         if(token == 1) MAKEBOXFUNC_DIVIDING_TOKEN = true;
         else bool MAKEBOXFUNC_DIVIDING_TOKEN = false;
     cout << endl;
-    cout << "Program will reboot when 'binarization' is 0" << endl;
+    cout << "SYSTEM : Program will reboot when 'binarization' is 0" << endl;
+    cout << "SYSTEM : Press 'p' to stop/play the video." << endl;
+    cout << "SYSTEM : Press 'q' to quit." << endl;
     
     
     
@@ -101,6 +112,7 @@ FrameHandler::~FrameHandler(){
 
 bool FrameHandler::Play(){
     while(1){
+        time_start = getTickCount();
         if(waitKey(20) == 'p'){
             while(waitKey(1) != 'p');
         }
@@ -152,7 +164,7 @@ bool FrameHandler::Play(){
         if(totalframe == 2000)
             totalframe = 0;
         
-        if(totalframe % 50 == 0){
+        if(totalframe % 50 == 0){ // THIS IS FOR DEBUGGING
             // cout << "EXISTING OBJECT NUMBER  : " << Objects.size() << endl;
             // cout << "-------------------------" << endl;
             // cout << "ROI HEIGHT : " << roi_height << endl;
@@ -167,6 +179,16 @@ bool FrameHandler::Play(){
             cout << "detection() time \t\t: " << (time_end - time_start) / getTickFrequency() << endl;
             cout << "===============================" << endl;
              */
+            
+            time_end = getTickCount();
+            /* use this code when you wanna get elapsed time in a frame.
+            if(totalframe % thold_detect_time == 0){
+                cout << "(DETECT RUN? YES) " << (time_end - time_start) / getTickFrequency() << endl;
+            }
+            else{
+                cout << "(DETECT RUN? NO )" <<(time_end - time_start) / getTickFrequency() << endl;
+            }
+            */
         }
         
     } // total while
@@ -254,7 +276,6 @@ void FrameHandler::detection(){
                     "boxes[i].x"           "boxes[i].x + boxes[i].width"
     */
     
-    time_start = getTickCount();
     while(true){ // for upper line
         
         for(int i=0; i<Objects.size(); i++){
@@ -303,7 +324,6 @@ void FrameHandler::detection(){
             x++;
         }
     }
-    time_end = getTickCount();
 }
 
 void FrameHandler::detect_upperline(int x){
