@@ -17,22 +17,7 @@ using namespace cv;
 
 class DetectedObject{
 private:
-    friend class FrameHandler;
-    
-private:
-    Mat roi;
-    Mat hsv_roi;
-    Mat mask;
-    Mat roi_hist;
-    
-private:
-    Rect box;
-    int x;
-    int y;
-    int width;
-    int height;
-    int center_x;
-    int center_y;
+    Rect* box;
     
     int frame;
     int position;
@@ -41,10 +26,12 @@ private:
     int prev_position_y;
     
 public:
-    DetectedObject(int center_x, int center_y, int width, int height, int frame, int position);
-    // width <- horizon , height <- 2*thold_object_column
-    void reset();
-    void save_prev_pos();
+    DetectedObject(int center_x, int center_y, int half_width, int half_height, int frame, int position);
+    ~DetectedObject();
+    inline int center_x()   {return box->x + box->width/2;}
+    inline int center_y()   {return box->y + box->height/2;}
+    inline Rect& rect()     {return *box;}
+    inline int& pos()       {return position;}
 };
 
 #endif /* DetectedObject_hpp */
