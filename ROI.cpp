@@ -15,3 +15,4 @@ ROI::ROI(int center_x, int center_y, int width, int height){
 ROI::~ROI(){
     delete box;
 }
+

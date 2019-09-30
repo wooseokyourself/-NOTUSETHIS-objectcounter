@@ -43,9 +43,11 @@ void System::preprocess(){
 
 void System::postprocess(){
     if(Frame.setInfo() % detectInterval_time == 0){ /* Frame.showInfo() returns absFrame */
-        Judging.detectPeople(WhiteDetecting.makeROI(Frame.foreground()), Objs);
+        Judging.detectPeople(Frame.origin(), WhiteDetecting.makeROI(Frame.foreground()), Objs, Frame.absFrame(), ref_midline);
         /* makeROI() returns vector<ROI>*(<-pointer) */
     }
-    Tracking.tracking_and_counting(Frame.origin(), Frame.foreground(), Objs, ref_midline, inside, count); /* renew objects' boxes and count */
+    Tracking.tracking_and_counting(Frame.origin(), Frame.foreground(), Objs, ref_midline, inside, count);
+    /* renew objects' boxes and count */
+    
     Frame.show(); /* reset absFrame */
 }

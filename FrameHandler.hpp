@@ -25,6 +25,7 @@ public:
     FrameHandler(string videopath);
     inline Mat& origin()        {return origin_frame;}
     inline Mat& foreground()    {return foreground_frame;}
+    inline int absFrame()       {return absframe;}
     void ready();
     int setInfo();
     void show();

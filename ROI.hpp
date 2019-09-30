@@ -17,6 +17,7 @@ private:
 public:
     ROI(int center_x, int center_y, int width, int height);
     ~ROI();
+    inline cv::Rect& rect() {return *box;}
     inline int x()          {return box->x;}
     inline int y()          {return box->y;}
     inline int width()      {return box->width;}

@@ -18,7 +18,7 @@ class Judge{
 /* input: origin frame with ROI's / output: origin frame with detected boxes */
 public:
     Judge();
-    void detectPeople(vector<ROI>* ROIs, vector<DetectedObject>& Objs);
+    void detectPeople(Mat& origin, vector<ROI>* ROIs, vector<DetectedObject>& Objs, int absFrame, const int& ref_midline);
 };
 
 #endif /* Judge_hpp */

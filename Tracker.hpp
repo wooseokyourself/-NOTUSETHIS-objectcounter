@@ -21,9 +21,6 @@ class Tracker{
 public:
     Tracker();
     void tracking_and_counting(Mat& origin, Mat& foreground, vector<DetectedObject>& Objs, const int& midline, const int& inside, int& count);
-    
-private:
-    
 };
 
 #endif /* Tracker_hpp */

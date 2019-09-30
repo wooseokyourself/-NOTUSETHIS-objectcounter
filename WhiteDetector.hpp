@@ -24,9 +24,9 @@ private:
     uchar* top_1;   // -                               -
     uchar* top_2;   // -                               -
     uchar* top_3;   // ------------midline--------------
-    uchar* blw_3;   // -                               -
-    uchar* blw_2;   // -                               -
-    uchar* blw_1;   // ------------below_3--------------
+    uchar* btm_3;   // -                               -
+    uchar* btm_2;   // -                               -
+    uchar* btm_1;   // ------------below_3--------------
                     // ------------below_2--------------
                     // ------------below_1--------------
     
@@ -35,7 +35,9 @@ public:
     WhiteDetector(Mat& frame);
     void getPixels(Mat& foreground);
     vector<ROI>* makeROI(Mat& foreground);
+    inline int& topline() {return dtcVar.top_line;}
     inline int& midline() {return dtcVar.mid_line;}
+    inline int& btmline() {return dtcVar.btm_line;}
     
 protected:
     int recursive_ruler(uchar* ptr, int real_x, Mat& foreground);

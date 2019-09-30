@@ -13,9 +13,9 @@ WhiteDetector::WhiteDetector(Mat& frame)
     top_1 = nullptr;
     top_2 = nullptr;
     top_3 = nullptr;
-    blw_1 = nullptr;
-    blw_2 = nullptr;
-    blw_3 = nullptr;
+    btm_1 = nullptr;
+    btm_2 = nullptr;
+    btm_3 = nullptr;
 }
 
 void WhiteDetector::getPixels(Mat &foreground){ /* get ptrs to access each pixels of a frame */
@@ -23,9 +23,9 @@ void WhiteDetector::getPixels(Mat &foreground){ /* get ptrs to access each pixel
     top_2 = foreground.ptr<uchar>(dtcVar.top_line);
     top_3 = foreground.ptr<uchar>(dtcVar.top_line + dtcVar.detectInterval_rows);
     
-    blw_3 = foreground.ptr<uchar>(dtcVar.btm_line - dtcVar.detectInterval_rows);
-    blw_2 = foreground.ptr<uchar>(dtcVar.btm_line);
-    blw_1 = foreground.ptr<uchar>(dtcVar.btm_line + dtcVar.detectInterval_rows);
+    btm_3 = foreground.ptr<uchar>(dtcVar.btm_line - dtcVar.detectInterval_rows);
+    btm_2 = foreground.ptr<uchar>(dtcVar.btm_line);
+    btm_1 = foreground.ptr<uchar>(dtcVar.btm_line + dtcVar.detectInterval_rows);
 }
 
 vector<ROI>* WhiteDetector::makeROI(Mat &foreground){
@@ -82,21 +82,21 @@ vector<ROI>* WhiteDetector::makeROI(Mat &foreground){
         }
     }
     
-    /* Find ROI on below line */
+    /* Find ROI on bottom line */
     x = 0;
     while(true){ /* counting variable is 'x' */
         if(x > dtcVar.detectInterval_cols)
             break;
         else{
-            if(top_1[x * ratio] == 255){
-                if(top_2[x * ratio] == 255){
-                    if(top_3[x * ratio] == 255){
-                        length_1 = recursive_ruler(top_1, x * ratio, foreground);
-                        length_2 = recursive_ruler(top_2, x * ratio, foreground);
-                        length_3 = recursive_ruler(top_3, x * ratio, foreground);
+            if(btm_1[x * ratio] == 255){
+                if(btm_2[x * ratio] == 255){
+                    if(btm_3[x * ratio] == 255){
+                        length_1 = recursive_ruler(btm_1, x * ratio, foreground);
+                        length_2 = recursive_ruler(btm_2, x * ratio, foreground);
+                        length_3 = recursive_ruler(btm_3, x * ratio, foreground);
                         if(length_2 >= length_1 && length_2 >= length_3){ /* make ROI only when length_2 has the highest length */
                             if(length_2 >= dtcVar.min_width){
-                                ROIs->push_back(ROI(x*ratio + length_2/2, dtcVar.top_line, dtcVar.roi_width, dtcVar.roi_height));
+                                ROIs->push_back(ROI(x*ratio + length_2/2, dtcVar.btm_line, dtcVar.roi_width, dtcVar.roi_height));
                                 /* MakeBox(x * ratio, ) */
                             }
                             x += int(length_2/ratio);
@@ -114,7 +114,7 @@ vector<ROI>* WhiteDetector::makeROI(Mat &foreground){
 }
 
 int WhiteDetector::recursive_ruler(uchar *ptr, int start, Mat &foreground){
-    if(ptr[start] < 255) /* exit condition */
+    if(ptr[start] < 255) /* end condition */
         return dtcVar.detectInterval_cols;
     else
         return recursive_ruler(ptr, start + dtcVar.detectInterval_cols, foreground) + dtcVar.detectInterval_cols;
