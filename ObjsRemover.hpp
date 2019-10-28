@@ -10,17 +10,18 @@
 #define ObjsRemover_hpp
 
 #include "DetectedObject.hpp"
-#include "vector"
+#include "DetectVariables.hpp"
+#include <vector> 
 using namespace std;
 
 class ObjsRemover{
 public:
     ObjsRemover();
-    void remove(vector<DetectedObject>& Objs);
+    void remove(vector<DetectedObject>& Objs, const DetectVariables& vars);
     
 protected:
-    bool onEndpoint(DetectedObject& obj);
-    bool areOverlapping(DetectedObject& obj_a, DetectedObject& obj_b);
+    bool onEndpoint(const DetectedObject& obj, const DetectVariables& vars);
+    bool areOverlapping(const DetectedObject& obj_a, const DetectedObject& obj_b);
 };
 
 #endif /* ObjsRemover_hpp */

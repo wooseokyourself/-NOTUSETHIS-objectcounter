@@ -12,7 +12,7 @@ ObjsRemover::ObjsRemover(){
     
 }
 
-void ObjsRemover::remove(vector<DetectedObject>& Objs){
+void ObjsRemover::remove(vector<DetectedObject>& Objs, const DetectedObject& vars){
     for(int i=0; i<Objs.size(); i++){
         if(onEndpoint(Objs[i])){
             swap(Objs[i], Objs.back());
@@ -32,15 +32,15 @@ void ObjsRemover::remove(vector<DetectedObject>& Objs){
     }
 }
 
-bool ObjsRemover::onEndpoint(DetectedObject &obj){
-    if(){
+bool ObjsRemover::onEndpoint(const DetectedObject &obj, const DetectVariables& vars){
+    if(obj.center_y() || obj.center_y() > ){
         return true;
     }
     else
         return false;
 }
 
-bool ObjsRemover::areOverlapping(DetectedObject &obj_a, DetectedObject &obj_b){
+bool ObjsRemover::areOverlapping(const DetectedObject &obj_a, const DetectedObject &obj_b){
     if(){
         return true;
     }

@@ -27,7 +27,7 @@ private:
     
 public:
     DetectedObject(int center_x, int center_y, int half_width, int half_height, int frame, int position);
-    DetectedObject(Point center, int half_width, int half_height, int frame, ont position);
+    DetectedObject(Point center, int half_width, int half_height, int frame, int position);
     ~DetectedObject();
     inline int center_x()   {return box->x + box->width/2;}
     inline int center_y()   {return box->y + box->height/2;}

@@ -13,7 +13,7 @@
 #include "FrameHandler.hpp"
 
 class ImageVariables{
-    friend class FrameHandler
+    friend class FrameHandler;
     
 private:
     int MOG2_varThreshold;

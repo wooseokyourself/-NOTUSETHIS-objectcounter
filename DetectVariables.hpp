@@ -13,13 +13,14 @@
 #include "WhiteDetector.hpp"
 
 class DetectVariables{
-    friend class WhiteDetector
+    friend class WhiteDetector;
     
 private:
     int top_line;
     int mid_line;
     int btm_line;
-    
+    int detect_time;
+
     int min_width;
     int min_height;
     int roi_width;
